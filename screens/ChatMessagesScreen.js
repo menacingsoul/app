@@ -23,7 +23,9 @@ import { Entypo } from "@expo/vector-icons";
 import EmojiSelector from "react-native-emoji-selector";
 import { UserType } from "../UserContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import io from 'socket.io-client';
 import * as ImagePicker from "expo-image-picker";
+
 
 const ChatMessagesScreen = () => {
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
@@ -39,9 +41,7 @@ const ChatMessagesScreen = () => {
 
   const scrollViewRef = useRef(null);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, []);
+  const socket = useRef(null);  // Ref for the socket connection
 
   const scrollToBottom = () => {
     if (scrollViewRef.current) {
@@ -49,6 +49,26 @@ const ChatMessagesScreen = () => {
     }
   };
 
+  useEffect(() => {
+      socket.current = io('http://192.168.56.1:3000'); // Your backend URL
+
+      socket.current.on('connect', () => {
+          socket.current.emit('setUser', userId); // Set the user ID
+      });
+
+      socket.current.on('newMessage', (newMessage) => {
+          // Check if the new message belongs to this chat
+          if (newMessage.senderId._id === recepientId || newMessage.recepientId === recepientId) {
+              setMessages((prevMessages) => [...prevMessages, newMessage]);
+              scrollToBottom();
+          }
+      });
+
+      return () => {
+          socket.current.disconnect(); // Clean up on unmount
+      };
+  }, [recepientId, userId]); // Re-run effect if these change
+  
   const handleContentSizeChange = () => {
     scrollToBottom();
   };
@@ -60,7 +80,7 @@ const ChatMessagesScreen = () => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://172.20.101.191:3000/messages/${userId}/${recepientId}`
+        `http://192.168.56.1:3000/messages/${userId}/${recepientId}`
       );
       const data = await response.json();
 
@@ -82,7 +102,7 @@ const ChatMessagesScreen = () => {
     const fetchRecepientData = async () => {
       try {
         const response = await fetch(
-          `http://172.20.101.191:3000/user/${recepientId}`
+          `http://192.168.56.1:3000/user/${recepientId}`
         );
 
         const data = await response.json();
@@ -113,7 +133,7 @@ const ChatMessagesScreen = () => {
         formData.append("messageText", message);
       }
 
-      const response = await fetch("http://172.20.101.191:3000/messages", {
+      const response = await fetch("http://192.168.56.1:3000/messages", {
         method: "POST",
         body: formData,
       });
@@ -133,7 +153,7 @@ const ChatMessagesScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
     headerStyle: {
-      backgroundColor: 'black', // Set the background color of the navigation bar
+      backgroundColor: 'teal', // Set the background color of the navigation bar
     },
       headerTitle: "",
       headerLeft: () => (
@@ -188,7 +208,7 @@ const ChatMessagesScreen = () => {
   const deleteMessages = async (messageIds) => {
     try {
       const response = await fetch(
-        "http://172.20.101.191:3000/deleteMessages",
+        "http://192.168.56.1:3000/deleteMessages",
         {
           method: "POST",
           headers: {
@@ -303,8 +323,7 @@ const ChatMessagesScreen = () => {
           }
 
           if (item.messageType === "image") {
-            const baseUrl =
-              "/Users/sujananand/Build/messenger-project/api/files/";
+            const baseUrl ="";
             const imageUrl = item.imageUrl;
             const filename = imageUrl.split("/").pop();
             const source = { uri: baseUrl + filename };

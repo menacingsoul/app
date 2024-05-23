@@ -32,7 +32,7 @@ const RegisterScreen = () => {
 
     axios
       .post(
-        "http://172.20.101.191:3000/register",
+        "http://192.168.56.1:3000/register",
         user
       )
       .then((response) => {

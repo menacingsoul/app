@@ -10,7 +10,7 @@ const UserChat = ({ item }) => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://172.20.101.191:3000/messages/${userId}/${item._id}`
+        `http://192.168.56.1:3000/messages/${userId}/${item._id}`
       );
       const data = await response.json();
 
@@ -71,14 +71,14 @@ const UserChat = ({ item }) => {
       <View style={{ flex: 1 }}>
         <Text style={{ fontSize: 15, fontWeight: "500" }}>{item?.name}</Text>
         {lastMessage && (
-          <Text style={{ marginTop: 3, color: "gray", fontWeight: "500" }}>
+          <Text style={{ marginTop: 3, color: "black", fontWeight: "500" }}>
             {lastMessage?.message}
           </Text>
         )}
       </View>
 
       <View>
-        <Text style={{ fontSize: 11, fontWeight: "400", color: "gray" }}>
+        <Text style={{ fontSize: 11, fontWeight: "400", color: "black" }}>
           {lastMessage && formatTime(lastMessage?.timeStamp)}
         </Text>
       </View>
