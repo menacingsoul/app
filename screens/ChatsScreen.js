@@ -1,16 +1,48 @@
-import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
+import { StyleSheet,ScrollView, Pressable } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { UserType } from "../UserContext";
+import { Text,View } from "react-native";
 import { useRef } from 'react';
+import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import UserChat from "../components/UserChat";
 import io from 'socket.io-client';
 
-const ChatsScreen = () => {
+const HomeScreen = () => {
   const [acceptedFriends, setAcceptedFriends] = useState([]);
   const { userId, setUserId } = useContext(UserType);
   const navigation = useNavigation();
   const socket = useRef(null);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "",
+      headerLeft: () => (
+        <Text style={{ fontSize: 25, fontWeight: "600", color: "#838FE2" }}>
+          ChatterBox
+        </Text>
+      ),
+      headerRight: () => (
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <AntDesign
+            name="find"
+            onPress={() => navigation.navigate("Home")}
+            size={24}
+            color="black"
+          />
+          <MaterialIcons
+            onPress={() => navigation.navigate("Requests")}
+            name="people-outline"
+            size={24}
+            color="black"
+          />
+        </View>
+      ),
+    });
+  }, []);
+
   useEffect(() => {
     socket.current = io('http://192.168.56.1:3000');
 
@@ -60,6 +92,6 @@ const ChatsScreen = () => {
   );
 };
 
-export default ChatsScreen;
+export default HomeScreen;
 
 const styles = StyleSheet.create({});

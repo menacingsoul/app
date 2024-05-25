@@ -180,7 +180,7 @@ const ChatMessagesScreen = () => {
                   borderRadius: 15,
                   resizeMode: "cover",
                 }}
-                source={{ uri: recepientData?.image }}
+                source={{ uri: recepientData?.image||'https://freesvg.org/img/abstract-user-flat-4.png' }}
               />
 
               <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold" ,color:"white"}}>

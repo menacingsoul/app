@@ -1,49 +1,59 @@
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { UserType } from "../UserContext";
+import io from "socket.io-client";
 
 const UserChat = ({ item }) => {
-  const { userId, setUserId } = useContext(UserType);
-  const [messages, setMessages] = useState([]);
+  const { userId } = useContext(UserType);
+  const [lastMessage, setLastMessage] = useState(null);
   const navigation = useNavigation();
-  const fetchMessages = async () => {
+  const socket = useRef(null);
+
+  useEffect(() => {
+    socket.current = io("http://192.168.56.1:3000");
+    socket.current.on("connect", () => {
+      socket.current.emit("setUser", userId);
+    });
+
+    fetchLastMessage(); // Initial fetch
+
+    socket.current.on("newMessage", (newMessage) => {
+      if (
+        newMessage.senderId._id === item._id ||
+        newMessage.recepientId === item._id
+      ) {
+        setLastMessage(newMessage);
+      }
+    });
+
+    return () => {
+      socket.current.disconnect();
+    };
+  }, [item._id, userId]);
+
+  const fetchLastMessage = async () => {
     try {
       const response = await fetch(
         `http://192.168.56.1:3000/messages/${userId}/${item._id}`
       );
-      const data = await response.json();
 
       if (response.ok) {
-        setMessages(data);
+        const data = await response.json();
+        setLastMessage(data[data.length - 1]); // Get the last message directly
       } else {
-        console.log("error showing messags", response.status.message);
+        console.error("Error fetching messages:", response.statusText); // Improved error logging
       }
     } catch (error) {
-      console.log("error fetching messages", error);
+      console.error("Error fetching messages:", error);
     }
   };
 
-  useEffect(() => {
-    fetchMessages();
-  }, []);
-  console.log(messages);
-
-  const getLastMessage = () => {
-    const userMessages = messages.filter(
-      (message) => message.messageType === "text"
-    );
-
-    const n = userMessages.length;
-
-    return userMessages[n - 1];
-  };
-  const lastMessage = getLastMessage();
-  console.log(lastMessage);
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
   };
+
   return (
     <Pressable
       onPress={() =>
@@ -65,7 +75,7 @@ const UserChat = ({ item }) => {
     >
       <Image
         style={{ width: 50, height: 50, borderRadius: 25, resizeMode: "cover" }}
-        source={{ uri: item?.image }}
+        source={{ uri: item?.image||'https://freesvg.org/img/abstract-user-flat-4.png' }}
       />
 
       <View style={{ flex: 1 }}>

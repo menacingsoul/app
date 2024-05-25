@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import { StyleSheet, Text, View, Pressable, Image, TouchableOpacity } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 import { UserType } from "../UserContext";
 
@@ -67,8 +67,24 @@ const User = ({ item }) => {
   console.log("friend requests sent", friendRequests);
   console.log("user friends", userFriends);
   return (
-    <Pressable
-      style={{ flexDirection: "row", alignItems: "center", marginVertical: 10, backgroundColor:"black" }}
+    <TouchableOpacity
+      style={{ 
+        flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#222831', // Dark background
+    padding: 15,
+    marginVertical: 3,
+    borderRadius: 10,
+    shadowColor: '#000',  // Shadow color
+    shadowOffset: {
+        width: 0,
+        height: 1.5,
+    },
+    shadowOpacity: 0.25, // Shadow opacity
+    shadowRadius: 2.84,  // Shadow blur radius
+    elevation: 3,       // Elevation for Android
+       }}
     >
       <View>
         <Image
@@ -78,7 +94,7 @@ const User = ({ item }) => {
             borderRadius: 25,
             resizeMode: "cover",
           }}
-          source={{ uri: item.image }}
+          source={{ uri: item.image||'https://freesvg.org/img/abstract-user-flat-4.png' }}
         />
       </View>
 
@@ -89,7 +105,7 @@ const User = ({ item }) => {
       {userFriends.includes(item._id) ? (
         <Pressable
           style={{
-            backgroundColor: "#82CD47",
+            backgroundColor: "#535C91",
             padding: 10,
             width: 105,
             borderRadius: 6,
@@ -125,7 +141,7 @@ const User = ({ item }) => {
           </Text>
         </Pressable>
       )}
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

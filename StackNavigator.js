@@ -25,7 +25,7 @@ const StackNavigator = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Friends" component={FriendsScreen} />
+        <Stack.Screen name="Requests" component={FriendsScreen} />
 
         <Stack.Screen name="Chats" component={ChatsScreen} />
 
