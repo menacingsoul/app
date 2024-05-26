@@ -6,6 +6,7 @@ import { Text,View } from "react-native";
 import { useRef } from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import UserChat from "../components/UserChat";
 import io from 'socket.io-client';
@@ -35,6 +36,12 @@ const HomeScreen = () => {
           <MaterialIcons
             onPress={() => navigation.navigate("Requests")}
             name="people-outline"
+            size={24}
+            color="black"
+          />
+          <FontAwesome5
+            name="user-circle"
+            onPress={() => navigation.navigate("Profile")}
             size={24}
             color="black"
           />

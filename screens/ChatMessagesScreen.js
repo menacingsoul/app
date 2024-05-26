@@ -153,7 +153,7 @@ const ChatMessagesScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
     headerStyle: {
-      backgroundColor: 'teal', // Set the background color of the navigation bar
+      backgroundColor: '#9290C3', // Set the background color of the navigation bar
     },
       headerTitle: "",
       headerLeft: () => (
@@ -264,12 +264,12 @@ const ChatMessagesScreen = () => {
     }
   };
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#black" }}>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor:'white',justifyContent:'space-between' }}>
       <ScrollView
         ref={scrollViewRef}
         contentContainerStyle={{ flexGrow: 1 }}
         onContentSizeChange={handleContentSizeChange}
-        style={{ backgroundColor: "#393939" }}
+        style={{ backgroundColor: "#070F2B" }}
       >
         {messages.map((item, index) => {
           if (item.messageType === "text") {
@@ -380,7 +380,7 @@ const ChatMessagesScreen = () => {
           flexDirection: "row",
           alignItems: "center",
           paddingHorizontal: 10,
-          backgroundColor:"black",
+          backgroundColor:"white",
           paddingVertical: 10,
           borderTopWidth: 1,
           borderTopColor: "#dddddd",
@@ -393,6 +393,7 @@ const ChatMessagesScreen = () => {
           name="emoji-happy"
           size={24}
           color="gray"
+         
         />
 
         <TextInput
@@ -405,7 +406,8 @@ const ChatMessagesScreen = () => {
             borderColor: "#dddddd",
             borderRadius: 20,
             paddingHorizontal: 10,
-            color: "white",
+            color: "black",
+            backgroundColor: "white",
           }}
           placeholder="Type Your message..."
         />
