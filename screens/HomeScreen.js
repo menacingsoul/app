@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { RefreshControl } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { UserType } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
@@ -18,10 +19,9 @@ const HomeScreen = () => {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    await fetchUsers(); 
+    await fetchUsers();
     setRefreshing(false);
-}, []);
-
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -51,6 +51,12 @@ const HomeScreen = () => {
             size={24}
             color="black"
           />
+          <FontAwesome5
+            name="user-circle"
+            onPress={() => navigation.navigate("Profile")}
+            size={24}
+            color="black"
+          />
         </View>
       ),
     });
@@ -58,52 +64,31 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try{
-      const token = await AsyncStorage.getItem("authToken");
-      const decodedToken = jwt_decode(token);
-      const userId = decodedToken.userId;
-      setUserId(userId);
-      /*
-      const response = await axios.get(
-                `http://192.168.56.1:3000/users/${userId}`
-            );
-
-            if (response.status === 200) {
-                setUsers(response.data); // Make sure to update the state
-            } else {
-                console.error(
-                    "Error retrieving users:",
-                    response.status,
-                    response.data
-                );
-            }
-        } catch (error) {
-            console.log("error retrieving users", error);
-            setRefreshing(false); // Stop refreshing on error
-        } finally {
-            setRefreshing(false); // Ensure spinner stops in all cases
-        }
-      */ 
-        const response = await axios.get(
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+        const decodedToken = jwt_decode(token);
+        const userId = decodedToken.userId;
+        setUserId(userId);
+        
+       const response = await axios.get(
           `http://192.168.56.1:3000/users/${userId}`
-      );
+        );
 
-      if (response.status === 200) {
+        if (response.status === 200) {
           setUsers(response.data); // Make sure to update the state
-      } else {
+        } else {
           console.error(
-              "Error retrieving users:",
-              response.status,
-              response.data
+            "Error retrieving users:",
+            response.status,
+            response.data
           );
+        }
+      } catch (error) {
+        console.log("error retrieving users", error);
+        setRefreshing(false); // Stop refreshing on error
+      } finally {
+        setRefreshing(false); // Ensure spinner stops in all cases
       }
-  } 
-   catch(error) {
-      console.log("error retrieving users", error);
-      setRefreshing(false); // Stop refreshing on error
-  } finally {
-      setRefreshing(false); // Ensure spinner stops in all cases
-  }
     };
     fetchUsers();
   }, []);
