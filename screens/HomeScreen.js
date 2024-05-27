@@ -71,7 +71,7 @@ const HomeScreen = () => {
         setUserId(userId);
         
        const response = await axios.get(
-          `http://192.168.56.1:3000/users/${userId}`
+          `https://chatterbox-backend-asgm.onrender.com/users/${userId}`
         );
 
         if (response.status === 200) {

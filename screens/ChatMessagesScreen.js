@@ -50,7 +50,7 @@ const ChatMessagesScreen = () => {
   };
 
   useEffect(() => {
-      socket.current = io('http://192.168.56.1:3000'); // Your backend URL
+      socket.current = io('https://chatterbox-backend-asgm.onrender.com'); // Your backend URL
 
       socket.current.on('connect', () => {
           socket.current.emit('setUser', userId); // Set the user ID
@@ -80,7 +80,7 @@ const ChatMessagesScreen = () => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://192.168.56.1:3000/messages/${userId}/${recepientId}`
+        `https://chatterbox-backend-asgm.onrender.com/messages/${userId}/${recepientId}`
       );
       const data = await response.json();
 
@@ -102,7 +102,7 @@ const ChatMessagesScreen = () => {
     const fetchRecepientData = async () => {
       try {
         const response = await fetch(
-          `http://192.168.56.1:3000/user/${recepientId}`
+          `https://chatterbox-backend-asgm.onrender.com/user/${recepientId}`
         );
 
         const data = await response.json();
@@ -133,7 +133,7 @@ const ChatMessagesScreen = () => {
         formData.append("messageText", message);
       }
 
-      const response = await fetch("http://192.168.56.1:3000/messages", {
+      const response = await fetch("https://chatterbox-backend-asgm.onrender.com/messages", {
         method: "POST",
         body: formData,
       });
@@ -208,7 +208,7 @@ const ChatMessagesScreen = () => {
   const deleteMessages = async (messageIds) => {
     try {
       const response = await fetch(
-        "http://192.168.56.1:3000/deleteMessages",
+        "https://chatterbox-backend-asgm.onrender.com/deleteMessages",
         {
           method: "POST",
           headers: {

@@ -31,7 +31,7 @@ const RegisterScreen = () => {
         }
 
         try {
-            const response = await axios.post("http://192.168.56.1:3000/send-otp", {
+            const response = await axios.post("https://chatterbox-backend-asgm.onrender.com/send-otp", {
                 email: email,
             });
             if (response.status === 200) {
@@ -48,7 +48,7 @@ const RegisterScreen = () => {
 
     const handleVerifyOtp = async () => {
         try {
-            const response = await axios.post("http://192.168.56.1:3000/verify-otp", {
+            const response = await axios.post("https://chatterbox-backend-asgm.onrender.com/verify-otp", {
                 email: email,  // Send email 
                 otp: otp,
             });
@@ -74,7 +74,7 @@ const RegisterScreen = () => {
           };
       
             const response = await axios.post(
-                "http://192.168.56.1:3000/register",
+                "https://chatterbox-backend-asgm.onrender.com/register",
                 user
             );
             console.log(response);

@@ -51,7 +51,7 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    socket.current = io('http://192.168.56.1:3000');
+    socket.current = io('https://chatterbox-backend-asgm.onrender.com');
 
     socket.current.on('connect', () => {
         socket.current.emit('setUser', userId);
@@ -60,7 +60,7 @@ const HomeScreen = () => {
     const acceptedFriendsList = async () => {
         try {
             const response = await fetch(
-                `http://192.168.56.1:3000/accepted-friends/${userId}`
+                `https://chatterbox-backend-asgm.onrender.com/accepted-friends/${userId}`
             );
             const data = await response.json();
 

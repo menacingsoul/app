@@ -11,7 +11,7 @@ const FriendsScreen = () => {
   const socket = useRef(null);
 
   useEffect(() => {
-    socket.current = io("http://192.168.56.1:3000");
+    socket.current = io("https://chatterbox-backend-asgm.onrender.com");
 
     socket.current.on("connect", () => {
       socket.current.emit("setUser", userId);
@@ -60,7 +60,7 @@ const FriendsScreen = () => {
   const fetchFriendRequests = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.56.1:3000/friend-request/${userId}`
+        `https://chatterbox-backend-asgm.onrender.com/friend-request/${userId}`
       );
       if (response.status === 200 && Array.isArray(response.data)) {
         // Ensure acceptedFriends is available before filtering

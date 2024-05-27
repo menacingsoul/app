@@ -30,6 +30,16 @@ const ProfileScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoadingFriends, setIsLoadingFriends] = useState(true);
 
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("authToken");
+      setUserId(null);
+      navigation.navigate("Login"); // Navigate to the login screen
+    } catch (error) {
+      console.log("Error logging out:", error);
+    }
+  };
+
   const handleImageUpload = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -46,7 +56,7 @@ const ProfileScreen = () => {
   const fetchUserFriends = async () => {
     try {
         const response = await axios.get(
-          `http://192.168.56.1:3000/user-friends/${userId}`
+          `https://chatterbox-backend-asgm.onrender.com/user-friends/${userId}`
         );
         if (response.status === 200) {
           setFriends(response.data);
@@ -69,7 +79,7 @@ const ProfileScreen = () => {
 
     try {
       const response = await axios.get(
-        `http://192.168.56.1:3000/user/${userId}`
+        `https://chatterbox-backend-asgm.onrender.com/user/${userId}`
       );
       if (response.status === 200) {
         setName(response.data.name);
@@ -94,7 +104,7 @@ const ProfileScreen = () => {
     };
 
     axios
-      .put(`http://192.168.56.1:3000/update-profile/${userId}`, updatedUser)
+      .put(`https://chatterbox-backend-asgm.onrender.com/update-profile/${userId}`, updatedUser)
       .then((response) => {
         Alert.alert(
           "Profile Updated!",
@@ -118,7 +128,7 @@ const ProfileScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <View contentContainerStyle={styles.scrollContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Pressable onPress={handleImageUpload} style={styles.imageContainer}>
           <Image
             source={{
@@ -162,19 +172,25 @@ const ProfileScreen = () => {
               <Text style={styles.buttonText}>Update Profile</Text>
             </Pressable>
           ) : (
+            <View style = {styles.flexButton}>
             <Pressable
               onPress={() => setIsEditing(true)}
               style={[styles.button, styles.editButton]}
             >
               <Text style={styles.buttonText}>Edit Profile</Text>
             </Pressable>
+            <Pressable style={[styles.button,styles.editButton]} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout</Text>
+           </Pressable>
+            </View>
           )}
-        </View>
+          
         </View>
         </View>
         <View >
         <FriendList friends={friends} />
         </View>
+        </ScrollView>
        
       
     </KeyboardAvoidingView>
@@ -184,7 +200,7 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white", // Dark background
+    backgroundColor: "#EEEEEE",
   },
   imageContainer: {
     alignItems: "center",
@@ -256,6 +272,17 @@ const styles = StyleSheet.create({
   updateButton: {
     backgroundColor: "#E19898", // Green
   },
+  flexButton:{
+    flexDirection: "row",
+    gap: 10,
+  },
+  logoutButton: {
+    backgroundColor: "#662549", // Red or a suitable color for a logout button
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 20,
+    alignSelf: "center", // Center the button
+},
   buttonText: {
     color: "white",
     fontWeight: "bold",

@@ -11,7 +11,7 @@ const UserChat = ({ item }) => {
   const socket = useRef(null);
 
   useEffect(() => {
-    socket.current = io("http://192.168.56.1:3000");
+    socket.current = io("https://chatterbox-backend-asgm.onrender.com");
     socket.current.on("connect", () => {
       socket.current.emit("setUser", userId);
     });
@@ -35,7 +35,7 @@ const UserChat = ({ item }) => {
   const fetchLastMessage = async () => {
     try {
       const response = await fetch(
-        `http://192.168.56.1:3000/messages/${userId}/${item._id}`
+        `https://chatterbox-backend-asgm.onrender.com/messages/${userId}/${item._id}`
       );
 
       if (response.ok) {

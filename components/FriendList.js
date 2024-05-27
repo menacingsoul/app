@@ -10,7 +10,7 @@ const FriendList = ({ friends }) => {
     const { userId } = useContext(UserType);
     const socket = useRef(null);
     useEffect(() => {
-        socket.current = io("http://192.168.56.1:3000");
+        socket.current = io("https://chatterbox-backend-asgm.onrender.com");
         socket.current.on("connect", () => {
           socket.current.emit("setUser", userId);
         });
@@ -22,7 +22,7 @@ const FriendList = ({ friends }) => {
       const handleRemoveFriend = async (friendId) => {
         try {
           const response = await axios.post(
-            `http://192.168.56.1:3000/remove-friend`,
+            `https://chatterbox-backend-asgm.onrender.com/remove-friend`,
             { userId, friendId }
           );
           if (response.status === 200) {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
         gap: 5,
         flexDirection: 'column',
-        padding: 3,
+        padding: 15,
         
   },
   sectionTitle: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   noFriendsText: {
     textAlign: "center",
     marginTop: 20,
-    color: "#fff",
+    color: "black",
   },
   removeButton:{
     backgroundColor: "#CD1818",
