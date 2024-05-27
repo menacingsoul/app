@@ -9,7 +9,7 @@ import io from "socket.io-client";
 const FriendRequest = ({ item, userId,onFriendRequestUpdate }) => {
     const socket = useRef(null);
     useEffect(() => {
-        socket.current = io("http://192.168.56.1:3000");
+        socket.current = io("https://chatterbox-backend-asgm.onrender.com");
         socket.current.on("connect", () => {
             socket.current.emit("setUser", userId);
         });
@@ -22,7 +22,7 @@ const FriendRequest = ({ item, userId,onFriendRequestUpdate }) => {
     const handleAction = async (action) => {
         try {
             const response = await axios.post(
-                `http://192.168.56.1:3000/friend-request/${action}`,
+                `https://chatterbox-backend-asgm.onrender.com/friend-request/${action}`,
                 { senderId: item._id, recipientId: userId }
             );
 

@@ -42,7 +42,7 @@ const LoginScreen = () => {
     };
 
     axios
-      .post("http://192.168.56.1:3000/login", user)
+      .post("https://chatterbox-backend-asgm.onrender.com/login", user)
       .then((response) => {
         console.log(response);
         const token = response.data.token;
