@@ -9,8 +9,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ActivityIndicator,
   FlatList,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
@@ -165,20 +167,20 @@ const ProfileScreen = () => {
           
         <View style={styles.buttonContainer}>
           {isEditing ? (
-            <Pressable
+            <TouchableOpacity
               onPress={handleUpdateProfile}
               style={[styles.button, styles.updateButton]}
             >
               <Text style={styles.buttonText}>Update Profile</Text>
-            </Pressable>
+            </TouchableOpacity>
           ) : (
             <View style = {styles.flexButton}>
-            <Pressable
+            <TouchableOpacity
               onPress={() => setIsEditing(true)}
               style={[styles.button, styles.editButton]}
             >
               <Text style={styles.buttonText}>Edit Profile</Text>
-            </Pressable>
+            </TouchableOpacity>
             <Pressable style={[styles.button,styles.editButton]} onPress={handleLogout}>
           <Text style={styles.buttonText}>Logout</Text>
            </Pressable>
@@ -188,7 +190,10 @@ const ProfileScreen = () => {
         </View>
         </View>
         <View >
-        <FriendList friends={friends} />
+          {
+            isLoadingFriends ? (<ActivityIndicator size="small" color="black" />) : ( <FriendList friends={friends} />)
+          }
+       
         </View>
         </ScrollView>
        
