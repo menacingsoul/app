@@ -61,7 +61,7 @@ const FriendList = ({ friends }) => {
                 }}
                 style={styles.friendImage}
               />
-              <Text style={styles.friendName}>{item.name}</Text>
+              <Text style={styles.friendName} numberOfLines={2} ellipsizeMode="tail" >{item.name}</Text>
               <Pressable style={styles.removeButton} 
               onPress={() => handleRemoveFriend(item._id)}
               ><Text style={{color:'white',fontWeight: "bold",padding:2}}>Remove</Text></Pressable>
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 5,
     width: 170,
+    height:160,
   },
   friendImage: {
     width: 40,
@@ -125,6 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "black",
     marginTop: 3,
+    textAlign:'center',
   },
   loadingText: {
     textAlign: "center",

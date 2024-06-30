@@ -1,4 +1,4 @@
-import { StyleSheet,ScrollView, Pressable } from "react-native";
+import { StyleSheet,ScrollView, Pressable,ActivityIndicator, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useLayoutEffect } from "react";
 import { UserType } from "../UserContext";
@@ -11,8 +11,9 @@ import { useNavigation } from "@react-navigation/native";
 import UserChat from "../components/UserChat";
 import io from 'socket.io-client';
 
-const HomeScreen = () => {
+const ChatScreen = () => {
   const [acceptedFriends, setAcceptedFriends] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { userId, setUserId } = useContext(UserType);
   const navigation = useNavigation();
   const socket = useRef(null);
@@ -58,6 +59,7 @@ const HomeScreen = () => {
     });
 
     const acceptedFriendsList = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch(
                 `https://chatterbox-backend-asgm.onrender.com/accepted-friends/${userId}`
@@ -69,6 +71,8 @@ const HomeScreen = () => {
             }
         } catch (error) {
             console.log("error showing the accepted friends", error);
+        }finally{
+            setIsLoading(false);
         }
     };
 
@@ -90,15 +94,20 @@ const HomeScreen = () => {
   console.log("friends", acceptedFriends);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Pressable>
+      {isLoading?( <ActivityIndicator size="large" color="black" />) : 
+      (
+        <TouchableOpacity>
         {acceptedFriends.map((item, index) => (
           <UserChat key={index} item={item} />
         ))}
-      </Pressable>
+      </TouchableOpacity>
+      )
+      }
+      
     </ScrollView>
   );
 };
 
-export default HomeScreen;
+export default ChatScreen;
 
 const styles = StyleSheet.create({});
