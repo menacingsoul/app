@@ -20,7 +20,6 @@
     "expo": "~51.0.8",
     "expo-image-manipulator": "~12.0.5",
     "expo-image-picker": "~15.0.5",
-    "expo-insights": "~0.7.0",
     "expo-modules-autolinking": "~1.11.0",
     "expo-modules-core": "~1.12.11",
     "expo-status-bar": "^1.12.1",
