@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ChatterBox",
-    "slug": "chat-app",
+    "slug": "chatterbox",
     "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,7 +29,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "5d4915c0-4348-4953-ad36-e72537317d22"
+        "projectId": "a58eb444-352c-4943-ae67-a3b7715c2991"
       }
     },
     "owner": "menacing_soul"
